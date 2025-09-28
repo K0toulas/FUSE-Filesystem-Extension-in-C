@@ -30,22 +30,22 @@ The commands are standard UNIX shell commands that interact with the mounted dir
     cd filesystem
     make
     ```
-3.  **Prepare Directories: Create the two directories required for mounting.
+3.  **Prepare Directories: Create the two directories required for mounting.**
     ```bash
     mkdir rootdir mountdir
-    
-4. **Run the Application: Execute the compiled binary to mount the filesystem.
+     ```
+4. **Run the Application: Execute the compiled binary to mount the filesystem.**
 	```bash
  	# Use -f flag to run in the foreground for real-time console logging
 	./bbfs rootdir mountdir -f
 
-5. **Test Operations: The filesystem is now accessible through mountdir.
+5. **Test Operations: The filesystem is now accessible through mountdir.**
 	```bash
 	echo "Filesystem test data" > mountdir/sample.txt
 	ls -l mountdir
 	cat mountdir/sample.txt
 
-6. **Unmount: ***Always unmount*** the filesystem before exiting the process.
+6. **Unmount: ***Always unmount*** the filesystem before exiting the process.**
 	```bash
  	fusermount -u mountdir
 (See more inside the report)
