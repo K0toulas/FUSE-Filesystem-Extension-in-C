@@ -1,15 +1,21 @@
-# FUSE-Filesystem Extension in C
+# FUSE Filesystem Extension in C
 
-Developed as a core assignment for the Operating Systems course (ECE318), this project extends the Big Brother File System (BBFS) skeleton. It features:
-
-
-* FUSE API Integration: Implementing numerous FUSE callbacks (getattr, read, write, readdir, etc.) to translate standard UNIX system calls into custom file system logic.
-* Explicit Block Storage: Managing file data by saving blocks within a single designated backing file (e.g., blockstorage.txt as seen in bbfs.c), rather than relying on the 	underlying host file system's structure.
-* Structured Logging: Utilizing a custom logging library (log.c/log.h) to meticulously log all FUSE operations and internal state for debugging and analysis.
-* Filesystem Interface & Commands
+This project extends the [Big Brother File System (BBFS)](https://github.com/jpf/fuse-tutorial) by adding **block-level deduplication** and persistence.
 
 ---
-The commands are standard UNIX shell commands that interact with the mounted directory. The custom logic for these operations is implemented within the FUSE callback 			functions defined in bbfs.c
+
+##  Features
+- **FUSE API Integration**: Implemented key callbacks (`getattr`, `read`, `write`, `unlink`) to handle standard UNIX file operations.
+- **Block-Level Deduplication**: Splits files into 4KB blocks, computes SHA-1 hashes, and stores only unique blocks to minimize storage use.
+- **Custom Storage Management**: Uses `blockstorage.txt` (hash metadata) and `blockdata.bin` (unique data blocks) for efficient data access.
+- **Non-Volatile Persistence**: Files remain intact after unmount/remount cycles.
+- **Logging**: Custom logging (`log.c`, `log.h`) tracks FUSE operations and internal states for debugging.
+
+---
+
+##  Filesystem Operations
+Standard UNIX shell commands work seamlessly with the mounted directory:
+The custom logic for these operations is implemented within the FUSE callback functions defined in bbfs.c
 	
   * **`./bbfs <rootdir> <mountdir>`**	Mounts the custom filesystem. <rootdir> is the storage folder, and <mountdir> is the access point.
   * **`fusermount -u <mountdir>`**	***CRITICAL***: Safely unmounts the filesystem, ensuring data integrity.
@@ -48,4 +54,14 @@ The commands are standard UNIX shell commands that interact with the mounted dir
 6. **Unmount: ***Always unmount*** the filesystem before exiting the process.**
 	```bash
  	fusermount -u mountdir
-(See more inside the report)
+---
+#### Testing 
+* Test A: Compression & deletion
+* Test B: Identical files deduplication
+* Test C: Unique block storage
+* Test D: Large file support (>64KB)
+* Persistence Test: Files survive unmount/remount
+
+
+
+
